@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Post(models.Model):
     pub_date = models.DateTimeField()
-    title = modles.CharField(max_length=50)
+    title = models.CharField(max_length=50)
     body = models.TextField()
     WEATHER_CHOICES = [
         ('sunny', '맑음'),
