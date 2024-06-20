@@ -56,7 +56,7 @@ def secondpage_c(request):
 
 @login_required
 def categorypage(request, category, subcategory):
-    posts = Post.objects.filter(author = request.user,category=category, subcategory=subcategory)
+    posts = Post.objects.filter(author = request.user,categories__maincategory=category, categories__subcategory=subcategory)
     context ={
         'category': category,
         'subcategory': subcategory,
