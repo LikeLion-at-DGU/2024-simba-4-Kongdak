@@ -54,6 +54,7 @@ def secondpage_c(request):
         return redirect('firstpage')
     return render(request, 'main/secondpage_c.html')
 
+@login_required
 def categorypage(request, category, subcategory):
     posts = Post.objects.filter(author = request.user,category=category, subcategory=subcategory)
     context ={
@@ -83,3 +84,24 @@ def create_post(request, category, subcategory):
     else:
         form = PostForm()
     return render(request, 'main/create_post.html', {'form': form, 'category': category, 'subcategory': subcategory})
+
+@login_required
+def edit_post(request, category, subcategory, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.user != post.author:
+        return redirect('post_detail', category=category, subcategory=subcategory, post_id=post_id)
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detail', category=category, subcategory=subcategory, post_id=post.id)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'main/edit_post.html', {'form': form, 'post': post})
+
+@login_required
+def delete_post(request, category, subcategory, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.user == post.author:
+        post.delete()
+    return redirect('categorypage', category=category, subcategory=subcategory)
