@@ -15,8 +15,9 @@
 }
 
 .grid_b {
-  height: 60vh;
-  margin-top: 150px;
+  height: 80vh;
+  margin-top: 40px;
+
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 0.8fr 0.5fr 1fr 1fr 2fr;
@@ -41,7 +42,7 @@
 }
 
 .grid_b > div:nth-child(4) {
-  margin-top: 30px;
+  margin-top: 10px;
   margin-left: 40px;
 }
 

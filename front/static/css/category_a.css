@@ -16,7 +16,7 @@
 
 .grid_a {
   height: 60vh;
-  margin-top: 150px;
+  margin-top: 80px;
   display: grid;
   grid-template-columns: repeat(1fr, 4);
   grid-template-rows: 1fr 1fr 1fr;
@@ -28,7 +28,7 @@
 }
 
 .grid_a > div:nth-child(1) {
-  margin-bottom: 70px;
+  margin-bottom: 20px;
 }
 
 .grid_a > div:nth-child(2) {
@@ -37,7 +37,7 @@
 }
 
 .grid_a > div:nth-child(3) {
-  margin-left: 30px;
+  margin-left: 50px;
   margin-bottom: 10px;
 }
 
