@@ -5,14 +5,10 @@
 <div class="all_posts_container">
   <p id="all_line"></p>
   <div class="all_posts_frame1">
-    {% for post in posts %}
-    <a
-      href="{% url 'post_detail' post.category post.subcategory post.id %}"
-      class="all_posts_list"
-    >
-      <div>{{post.created_at}}</div>
-      <div>{{ post.title }}</div>
-      <div class="place">{{ post.subcategoty }}</div>
+    <a href="" class="all_posts_list">
+      <div>2024.06.22</div>
+      <div>김치만먹고싶다</div>
+      <div class="place">신공학관</div>
 
       <button>
         <svg
@@ -29,9 +25,11 @@
           />
         </svg>
       </button>
-      {% endfor %}
     </a>
   </div>
 </div>
-
 {% endblock %}
+<!-- {% endblock %} {{post.created_at}}{{ post.title }}{{post.subcategoty }}-->
+<!-- {% for post in posts %} -->
+<!-- {% endfor %} -->
+<!--{% url 'post_detail' 'post.category' 'post.subcategory' 'post.id' %} -->
