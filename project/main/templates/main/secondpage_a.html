@@ -1,4 +1,4 @@
-{% extends 'base.html' %}{% block content %} {% include 'shared/_topnav.html' %}
+{% extends 'base.html' %} {% block content %} {% include 'shared/_topnav.html'%}
 {% load static %}
 <link
   rel="stylesheet"
@@ -8,23 +8,22 @@
 
 <div class="grid-a-campus">
   <div class="campus-view-a">
-    <div class="button-1">
-      <img src="{% static 'assets/images/placeframe.svg' %}" alt="" />
-      <a href="{% url 'categorypage' 'a' '1' %}">사과/경영관</a>
-    </div>
-    <a href="" class="button-2">
-      <img src="../static/images/placeframe.svg" alt="" />
-      <p>대운동장</p>
+    <a href="{% url 'categorypage' 'a' '사과·경영관' %}" class="button-1">
+      <img src="{% static 'assets/images/placeframe.svg'%}" alt="" />
+      <p class="a_p">사과/경영관</p>
     </a>
-    <a href="" class="button-3">
-      <img src="../static/images/placeframe.svg" alt="" />
-      <p>학술문화관</p>
+    <a href="{% url 'categorypage' 'a' '대운동장' %}" class="button-2">
+      <img src="{% static 'assets/images/placeframe.svg'%}" alt="" />
+      <p class="a_p">대운동장</p>
     </a>
-    <a href="" class="button-4">
-      <img src="../static/images/placeframe.svg" alt="" />
-      <p>혜화관</p>
+    <a href="{% url 'categorypage' 'a' '학술문화관' %}" class="button-3">
+      <img src="{% static 'assets/images/placeframe.svg'%}" alt="" />
+      <p class="a_p">학술문화관</p>
+    </a>
+    <a href="{% url 'categorypage' 'a' '혜화관' %}" class="button-4">
+      <img src="{% static 'assets/images/placeframe.svg'%}" alt="" />
+      <p class="a_p">혜화관</p>
     </a>
   </div>
 </div>
-
 {% endblock %}

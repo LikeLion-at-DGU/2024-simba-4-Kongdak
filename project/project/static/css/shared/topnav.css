@@ -3,9 +3,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .top-nav {
@@ -24,21 +21,10 @@
 }
 
 .top-nav div:nth-child(2) {
-  width: 60%;
-}
-
-.top-nav div:nth-child(1) {
-  width: 15%;
   display: flex;
-  justify-content: center;
-}
-
-.top-nav div:nth-child(2) {
-  width: 60%;
-  display: flex;
-  justify-content: center;
   justify-content: center;
   align-items: center;
+  width: 60%;
 }
 
 .top-nav div:nth-child(3) {

@@ -43,7 +43,7 @@
   left: 60%;
 }
 
-p {
+.a_p {
   position: absolute;
   z-index: 2;
 }
