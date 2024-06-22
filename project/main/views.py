@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Post, Profile , Tag
 from django.db.models import Count
 from django.http import JsonResponse
+from datetime import datetime, timedelta
 
 def firstpage(request):
     return render(request, 'main/firstpage.html')
@@ -20,7 +21,7 @@ def login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)
-            return JsonResponse({'success': True})
+            return redirect('mainpage')
         else:
             return JsonResponse({'success': False, 'error': 'Invalid username or password.'}, status=400)
     return render(request, 'main/firstpage.html')
@@ -61,11 +62,25 @@ def mainpage(request):
     # 현재 사용자가 작성한 게시물 수
     user_post_count = Post.objects.filter(author=request.user).count()
 
+    # 가입일로부터 경과한 일수 계산
+    days_since_joined = (datetime.now().date() - request.user.date_joined.date()).days
+
+    # 주간 랭킹 계산
+    today = datetime.now()
+    start_of_week = today - timedelta(days=today.weekday())  # 이번 주 월요일
+    end_of_week = start_of_week + timedelta(days=6)  # 이번 주 일요일
+    weekly_top_authors = Post.objects.filter(created_at__date__gte=start_of_week, created_at__date__lte=end_of_week)\
+        .values('author__username')\
+        .annotate(post_count=Count('author'))\
+        .order_by('-post_count')[:3]
+
     context = {
         'user': request.user,
         'user_profile': user_profile,
         'top_authors': top_authors,  # 상위 3명의 작성자와 그들의 게시물 수
         'user_post_count': user_post_count,  # 현재 사용자가 작성한 게시물 수
+        'days_since_joined': days_since_joined,  # 가입일로부터 경과한 일수
+        'weekly_top_authors': weekly_top_authors,  # 주간 랭킹 상위 3명
     }
     
     return render(request, 'main/mainpage.html', context)
