@@ -14,14 +14,12 @@
   </div>
   <form id="create_form" action="" method="post">
     {% csrf_token %}
-
     <div class="diary_title">
       <div>제목:</div>
       <input type="text" name="title" />
     </div>
     <textarea id="text" placeholder="오늘의 추억을 남겨보세요!" name="content">
     </textarea>
-
     <div class="diary_frame2">
       <div>태그:</div>
       <input type="text" name="tags" />
