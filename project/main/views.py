@@ -10,7 +10,6 @@ from datetime import datetime, timedelta
 from .utils import get_weather
 
 
-
 def firstpage(request):
     return render(request, 'main/firstpage.html')
 
