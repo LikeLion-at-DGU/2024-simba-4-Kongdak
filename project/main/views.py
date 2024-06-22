@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Post, Profile
+from .models import Post, Profile , Tag
 from .forms import PostForm
 from django.db.models import Count
 def firstpage(request):
@@ -29,13 +29,14 @@ def signup(request):
             password = request.POST['password']
             nickname = request.POST['nickname']
             studentID = request.POST['studentID']
-
             if User.objects.filter(username=username).exists():
                 messages.error(request, 'Username already exists.')
+
             else:
                 user = User.objects.create_user(username=username, password=password)
                 Profile.objects.create(user=user, nickname=nickname, studentID=studentID)
                 messages.success(request, 'Account created successfully.')
+
                 return redirect('firstpage')
     return render(request, 'main/signup.html')
 
@@ -121,33 +122,61 @@ def post_detail(request, category, subcategory, post_id):
 @login_required
 def create_post(request, category, subcategory):
     if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.category = category
-            post.subcategory = subcategory
-            post.save()
-            form.save_m2m()  # ManyToMany 필드를 저장
+        title = request.POST.get('title', '')
+        content = request.POST.get('content', '')
+        tags_str = request.POST.get('tags', '')
+
+        if not title or not content:
+            messages.error(request, 'Title and content are required.')
+        else:
+            post = Post.objects.create(
+                title=title,
+                content=content,
+                author=request.user,
+                category=category,
+                subcategory=subcategory
+            )
+
+            # 태그 처리
+            if tags_str:
+                tags_list = [tag.strip() for tag in tags_str.split('#') if tag.strip()]
+                for tag_name in tags_list:
+                    tag, created = Tag.objects.get_or_create(name=tag_name)
+                    post.tags.add(tag)
+
             return redirect('categorypage', category=category, subcategory=subcategory)
-    else:
-        form = PostForm()
-    return render(request, 'main/create_post.html', {'form': form, 'category': category, 'subcategory': subcategory})
+
+    return render(request, 'main/create_post.html', {'category': category, 'subcategory': subcategory})
 
 @login_required
 def edit_post(request, category, subcategory, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.user != post.author:
         return redirect('post_detail', category=category, subcategory=subcategory, post_id=post_id)
+    
     if request.method == 'POST':
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            form.save()
-            form.save_m2m() # ManyToManyField 관계를 저장
+        title = request.POST.get('title', '')
+        content = request.POST.get('content', '')
+        tags_str = request.POST.get('tags', '')
+
+        if not title or not content:
+            messages.error(request, 'Title and content are required.')
+        else:
+            post.title = title
+            post.content = content
+            post.save()
+
+            # 태그 처리
+            post.tags.clear()  # 기존 태그 제거
+            if tags_str:
+                tags_list = [tag.strip() for tag in tags_str.split('#') if tag.strip()]
+                for tag_name in tags_list:
+                    tag, created = Tag.objects.get_or_create(name=tag_name)
+                    post.tags.add(tag)
+
             return redirect('post_detail', category=category, subcategory=subcategory, post_id=post.id)
-    else:
-        form = PostForm(instance=post)
-    return render(request, 'main/edit_post.html', {'form': form, 'post': post})
+    
+    return render(request, 'main/edit_post.html', {'post': post, 'category': category, 'subcategory': subcategory})
 
 @login_required
 def delete_post(request, category, subcategory, post_id):
@@ -160,10 +189,8 @@ def delete_post(request, category, subcategory, post_id):
 def all_posts(request):
     posts = Post.objects.all()
 
-    # 현재 사용자의 북마크된 게시물 ID 리스트
     bookmarked_posts = request.user.bookmark.all()
 
-    # 각 게시물에 북마크 여부를 추가
     for post in posts:
         post.is_bookmarked = post in bookmarked_posts
 
@@ -182,3 +209,18 @@ def bookmark(request, post_id):
         messages.success(request, '게시물이 북마크되었습니다.')
 
     return redirect('all_posts')
+
+@login_required
+def search_by_tag(request):
+    query = request.GET.get('q', '')
+    if query:
+        tags = [tag.strip() for tag in query.split('#') if tag.strip()]
+        posts = Post.objects.filter(tags__name__in=tags).distinct()
+    else:
+        posts = Post.objects.none()
+
+    context = {
+        'query': query,
+        'posts': posts,
+    }
+    return render(request, 'main/search.html', context)
