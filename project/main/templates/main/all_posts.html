@@ -8,7 +8,6 @@
   <div class="all_posts_frame1">
     <a
       href="{% url 'post_detail' post.category post.subcategory post.id %}?next={% url 'all_posts' %}"
-
       class="all_posts_list"
     >
       <div>{{post.created_at}}</div>
