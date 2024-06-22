@@ -6,21 +6,23 @@ from django.contrib.auth.decorators import login_required
 from .models import Post, Profile , Tag
 from .forms import PostForm
 from django.db.models import Count
+from django.http import JsonResponse
+
 def firstpage(request):
     return render(request, 'main/firstpage.html')
 
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)
-            return redirect('mainpage')
-        
+            return JsonResponse({'success': True})
         else:
-            messages.error(request, 'Invalid username or password.')
+            return JsonResponse({'success': False, 'error': 'Invalid username or password.'}, status=400)
     return render(request, 'main/firstpage.html')
+
 
 def signup(request):
     if request.method == 'POST':
