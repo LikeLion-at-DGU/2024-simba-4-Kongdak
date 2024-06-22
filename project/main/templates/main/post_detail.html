@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %} {% include 'shared/_topnav.html'%}
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="../static/css/view.css" />
+<link rel="stylesheet" type="text/css" href="../static/css/post_detail.css" />
 <div class="edit_container">
   <div class="edit_frame1">
     <div>2024년 6월 19일 수요일</div>
@@ -25,7 +25,7 @@
       <input type="text" name="tags" />
     </div>
 <div></div>
-    <a href="" id="edit_diary">
+    <a href="{% url ’edit’ post.id %}" id="edit_diary">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="32"
@@ -39,7 +39,7 @@
         />
       </svg>
     </a>
-    <a href="" id="delete_diary">
+    <a href="{% url‘delete’ post.id %}" id="delete_diary">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="32"

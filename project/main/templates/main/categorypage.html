@@ -13,38 +13,39 @@
       <div>누적글 코끼리 순위</div>
       <p id="line"></p>
       <div class="category_1_frame1">
+        {% for author in top_authors %}
         <div class="category_1_top">
           <div class="label">1위</div>
-          <div id="crown">{{context.top_authors}}</div>
+          <div id="crown">{{author.author__username}}</div>
           <div class="gauge-bar">
             <div class="fill" style="width: 100%"></div>
           </div>
-          <div class="value">{{post_count}}</div>
+          <div class="value">{{author.post_count }}</div>
         </div>
         <div class="category_1_top">
           <div class="label">2위</div>
-          <div id="crown">{{top_author}}</div>
+          <div id="crown">{{author.author__username}}</div>
           <div class="gauge-bar">
             <div class="fill" style="width: 70%"></div>
           </div>
-          <div class="value">{{post_count}}</div>
+          <div class="value">{{author.post_count}}</div>
         </div>
         <div class="category_1_top">
           <div class="label">3위</div>
-          <div id="crown">{{top_author}}</div>
+          <div id="crown">{{author.author__username}}</div>
           <div class="gauge-bar">
             <div class="fill" style="width: 40%"></div>
           </div>
-          <div class="value">{{post_count}}</div>
+          <div class="value">{{author.post_count}}</div>
         </div>
+        {% endfor %}
       </div>
     </div>
 
     <div class="category_1_frame2">
       <div class="post_count">
         <div>나의 글 목록</div>
-        <div>60개</div>
-        <!-- {{context.user_post_count}} -->
+        <div>{{user_post_count}}</div>
       </div>
       <p id="line"></p>
       <div class="scroll">
