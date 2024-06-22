@@ -84,7 +84,7 @@ def mainpage(request):
         'weekly_top_authors': weekly_top_authors,  # 주간 랭킹 상위 3명
     }
     
-    return render(request, 'main/mainpage.html', context)
+    return render(request, 'main/mainpage.html', context) ###
 
 
 def secondpage_a(request):
