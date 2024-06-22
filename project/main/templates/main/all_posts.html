@@ -13,7 +13,7 @@
         <a href="{% url 'post_detail' post.category post.subcategory post.id %}?next={% url 'all_posts' %}" class="post-item">
           <div>{{ post.created_at|date:"Y.m.d" }}</div>
           <div>{{ post.title }}</div>
-          <div class="place">{{ post.subcategory }}</div>
+          <div class="place" data-category="{{ post.category }}">{{ post.subcategory }}</div>
         </a>
         <button class="heart-btn" data="{{ post.id }}">
           <img src="{% static "assets/images/heartRed.svg" if post.is_bookmarked else "assets/images/heartWhite.svg" %}" alt="" data-is_bookmarked="{{ post.is_bookmarked }}">
