@@ -8,6 +8,7 @@ from django.db.models import Count
 from django.http import JsonResponse
 from datetime import datetime, timedelta
 
+
 def firstpage(request):
     return render(request, 'main/firstpage.html')
 
@@ -21,7 +22,7 @@ def login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)
-            return redirect('mainpage')
+            return JsonResponse({'success': True}, status=200)
         else:
             return JsonResponse({'success': False, 'error': 'Invalid username or password.'}, status=400)
     return render(request, 'main/firstpage.html')
@@ -84,6 +85,7 @@ def mainpage(request):
     }
     
     return render(request, 'main/mainpage.html', context)
+
 
 def secondpage_a(request):
     if not request.user.is_authenticated:
@@ -158,6 +160,8 @@ def create_post(request, category, subcategory):
 
             # 태그 처리
             if tags_str:
+                # 중간에 있는 모든 공백 제거
+                tags_str = tags_str.replace(' ', '')
                 tags_list = [tag.strip() for tag in tags_str.split('#') if tag.strip()]
                 for tag_name in tags_list:
                     tag, created = Tag.objects.get_or_create(name=tag_name)
@@ -166,6 +170,7 @@ def create_post(request, category, subcategory):
             return redirect('categorypage', category=category, subcategory=subcategory)
 
     return render(request, 'main/create_post.html', {'category': category, 'subcategory': subcategory})
+
 
 @login_required
 def edit_post(request, category, subcategory, post_id):
@@ -188,6 +193,7 @@ def edit_post(request, category, subcategory, post_id):
             # 태그 처리
             post.tags.clear()  # 기존 태그 제거
             if tags_str:
+                tags_str = tags_str.replace(' ', '')
                 tags_list = [tag.strip() for tag in tags_str.split('#') if tag.strip()]
                 for tag_name in tags_list:
                     tag, created = Tag.objects.get_or_create(name=tag_name)
@@ -195,7 +201,13 @@ def edit_post(request, category, subcategory, post_id):
 
             return redirect('post_detail', category=category, subcategory=subcategory, post_id=post.id)
     
-    return render(request, 'main/edit_post.html', {'post': post, 'category': category, 'subcategory': subcategory})
+    return render(request, 'main/edit_post.html', {
+        'post': post,
+        'category': category,
+        'subcategory': subcategory,
+        'tags': ' '.join(f'#{tag.name}' for tag in post.tags.all())
+    })
+
 
 @login_required
 def delete_post(request, category, subcategory, post_id):
@@ -244,6 +256,8 @@ def bookmark(request, post_id):
 def search_by_tag(request):
     query = request.GET.get('q', '')
     if query:
+        # 태그에서 띄어쓰기 제거
+        query = query.replace(' ', '')
         tags = [tag.strip() for tag in query.split('#') if tag.strip()]
         posts = Post.objects.filter(tags__name__in=tags).distinct()
     else:
