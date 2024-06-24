@@ -15,7 +15,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  word-spacing: 0.4rem;
+  word-spacing: 0.2rem;
 }
 
 .place {
@@ -41,7 +41,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  letter-spacing: 0.2rem;
+  letter-spacing: 0.05rem;
 }
 
 .item3 {

@@ -1,13 +1,6 @@
-allPost.js
-
 document.addEventListener("DOMContentLoaded", function () {
   const heartButtons = document.querySelectorAll(".heart-btn");
   const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-  const backBtn = document.querySelector("#back");
-
-  backBtn.addEventListener("click", () => {
-    window.location.href = "/mainpage";
-  });
 
   heartButtons.forEach((heartBtn) => {
     const heartImg = heartBtn.querySelector("img");
@@ -90,6 +83,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const postFrame = document.querySelector(".post-view");
 
   if (!postFrame) {
+    postNone.style.display = "block";
+  } else {
+    postNone.style.display = "none";
+  }
+
+  if (postFrame && postFrame.children.length === 1) {
     postNone.style.display = "block";
   } else {
     postNone.style.display = "none";
