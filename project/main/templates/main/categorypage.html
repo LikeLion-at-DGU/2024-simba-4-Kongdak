@@ -1,17 +1,15 @@
-{% extends 'base.html' %} {% block content %} {% include 'shared/_topnav.html'%}
-{% load static %}
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static 'css/categorypage.css'%}"
-/>
+{% extends 'base.html' %}
+{% block content %}
+  {% include 'shared/_topnav.html'%}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/categorypage.css'%}"/>
 
 <div class="category-view">
   <div class="post_container">
     <div id="post_place">{{subcategory}}</div>
     <div class="category_ranking">
       <div>누적글 코끼리 순위</div>
-      <p id="line"></p>
+      <p id="line_1"></p>
       <div class="category_1_frame1">
         {% for author in top_authors %}
         <div class="category_1_top" data-post-count="{{ author.post_count }}">
@@ -23,22 +21,22 @@
           <div class="value">{{author.post_count}}개</div>
         </div>
 
-        {% endfor %}
-      </div>
+          {% endfor %}
+        </div>
     </div>
 
     <div class="category_1_frame2">
       <div class="post_count">
         <div>나의 글 목록</div>
-        <div>{{user_post_count}}개</div>
+        <div> 총 {{user_post_count}}개</div>
       </div>
-      <p id="line"></p>
+      <p id="line_2"></p>
       <div class="scroll">
         {%for post in posts%}
 
         <a
-        href="{% url 'post_detail' post.category post.subcategory post.id %}?next={% url 'categorypage' category subcategory %}"
-        class="category_list"
+          href="{% url 'post_detail' post.category post.subcategory post.id %}?next={% url 'categorypage' category subcategory %}"
+          class="category_list"
         >
           <div>{{post.created_at|date:"Y.m.d"}}</div>
           <div>{{post.title }}</div>
@@ -47,25 +45,25 @@
         {% endfor %}
       </div>
     </div>
+
+    </div>
+
+  <div class="post">
+    <a href="{% url 'create_post' category subcategory %}" id="save"
+      >새로운 추억 남기기</a>
+    </div>
+
   </div>
 
-  <a href="{% url 'create_post' category subcategory %}" id="save"
-    >새로운 추억 남기기</a
-  >
+<script>
+  const sunnyUrl = '{% static "assets/images/sunny.png" %}';
+  const cloudyUrl = '{% static "assets/images/cloudy.png" %}';
+  const cloudUrl = '{% static "assets/images/cloud.png" %}';
+  const umbrellaUrl = '{% static "assets/images/umbrella.png" %}';
+  const snowyUrl = '{% static "assets/images/snowy.png" %}';
+  const urlCase = "auto";
+</script>
+<script src="{% static "js/category.js" %}"></script>
+<script src="{% static "js/backControl.js" %}"></script>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const topAuthors = document.querySelectorAll(".category_1_top");
-      const firstAuthorPostCount =
-        topAuthors[0].getAttribute("data-post-count");
-
-      topAuthors.forEach((author) => {
-        const postCount = author.getAttribute("data-post-count");
-        const fillBar = author.querySelector(".fill");
-        const percentage = (postCount / firstAuthorPostCount) * 100;
-        fillBar.style.width = percentage + "%";
-      });
-    });
-  </script>
-</div>
 {% endblock %}

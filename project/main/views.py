@@ -1,13 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth.models import User
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .models import Post, Profile , Tag
 from django.db.models import Count
+from django.contrib import messages
 from django.http import JsonResponse
 from datetime import datetime, timedelta
 from .utils import get_weather
+from django.utils import timezone
+from django.template.loader import render_to_string
+from django.utils.timezone import now
+from django.http import HttpResponse
+
 
 
 
@@ -58,10 +63,12 @@ def mainpage(request):
     # 현재 로그인된 사용자의 프로필 정보 가져오기
     user_profile = get_object_or_404(Profile, user=request.user)
 
-    # 모든 작성자와 그들의 게시물 수를 가져오기
+    ''' 
+    # 상위 3명
     top_authors = Post.objects.values('author__username')\
         .annotate(post_count=Count('author'))\
         .order_by('-post_count')[:3]
+    '''
 
     # 현재 사용자가 작성한 게시물 수
     user_post_count = Post.objects.filter(author=request.user).count()
@@ -80,12 +87,12 @@ def mainpage(request):
 
     # 날씨 정보 가져오기
     weather_main = get_weather()
+    #좋아요 
     bookmarked_posts = request.user.bookmark.all()
 
     context = {
         'user': request.user,
         'user_profile': user_profile,
-        'top_authors': top_authors,  # 상위 3명의 작성자와 그들의 게시물 수
         'user_post_count': user_post_count,  # 현재 사용자가 작성한 게시물 수
         'days_since_joined': days_since_joined,  # 가입일로부터 경과한 일수
         'weekly_top_authors': weekly_top_authors,  # 주간 랭킹 상위 3명
@@ -281,7 +288,7 @@ def search_by_tag(request):
         # 태그에서 띄어쓰기 제거
         query = query.replace(' ', '')
         tags = [tag.strip() for tag in query.split('#') if tag.strip()]
-        posts = Post.objects.filter(author=request.user, tags__name__in=tags).distinct()
+        posts = Post.objects.filter(tags__name__in=tags).distinct()
     else:
         posts = Post.objects.none()
 
@@ -303,3 +310,23 @@ def check_username(request):
         return JsonResponse(response)
     return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)
 
+
+def filter_by_date(request):
+    if request.method == 'GET':
+        current_year = now().year
+        
+        year_range = range(2024, current_year + 1)
+
+        year_selected = int(request.GET.get('year', now().year))
+        month_selected = int(request.GET.get('month', now().month))
+
+        posts = Post.objects.filter(
+            author=request.user,
+            created_at__year=year_selected,
+            created_at__month=month_selected
+        )
+
+        html_content = render_to_string('main/all_posts.html', {'posts': posts, 'year_range': year_range, 'year_selected': year_selected, 'month_selected': month_selected})
+        return HttpResponse(html_content)
+    else:
+        return redirect('all_posts')
