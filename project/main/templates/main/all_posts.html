@@ -7,7 +7,8 @@
 
   <link rel="stylesheet" type="text/css" href="{% static 'css/all_posts.css' %}"/>
   <div class="posts-container"> 
-    <p id="all_line"></p>
+    <div id="allview">모아보기</div>
+    <p class="all_line"></p>
 <form name="select-form" action="{% url 'filter_by_date' %}" method="get" id="select-form">
   {% csrf_token %}
    <div class="select-date" >
@@ -33,6 +34,7 @@
   </div>
 
 </form>
+<p class="all_line"></p>
 <div id="post_none" {% if posts %}style="display: none;"{% endif %}>작성한 글이 없습니다.</div>
 
     {% csrf_token %}
@@ -54,6 +56,11 @@
   <script>
     const redHeartUrl = '{% static "assets/images/heartRed.svg" %}';
     const whiteHeartUrl = '{% static "assets/images/heartWhite.svg" %}';
+    const urlCase = "/mainpage";
+
+
   </script>
   <script src="{% static 'js/allPost.js' %}"></script>
+  <script src="{% static 'js/placeFrame.js' %}"></script>
+  <script src="{% static "js/backControl.js" %}"></script>
 {% endblock %}
