@@ -254,7 +254,7 @@ def post_detail(request, category, subcategory, post_id):
 
 @login_required
 def all_posts(request):
-    posts = Post.objects.filter(author=request.user)
+    posts = Post.objects.filter(author=request.user).order_by('-created_at') 
     bookmarked_posts = request.user.bookmark.all()
 
     for post in posts:
@@ -319,21 +319,23 @@ def check_username(request):
 
 def filter_by_date(request):
     if request.method == 'GET':
-        current_year = now().year
-        year_selected = int(request.GET.get('year', now().year))
+        start_year_selected = int(request.GET.get('start_year', 2024))
+        end_year_selected = int(request.GET.get('end_year', 2024))
         start_month_selected = int(request.GET.get('start_month', 1))
         end_month_selected = int(request.GET.get('end_month', 12))
 
         posts = Post.objects.filter(
             author=request.user,
-            created_at__year=year_selected,
+            created_at__year__gte=start_year_selected,
+            created_at__year__lte=end_year_selected,
             created_at__month__gte=start_month_selected,
             created_at__month__lte=end_month_selected
-        )
+        ).order_by('-created_at') 
 
         html_content = render_to_string('main/all_posts.html', {
             'posts': posts,
-            'year_selected': year_selected,
+            'start_year_selected': start_year_selected,
+            'end_year_selected': end_year_selected,
             'start_month_selected': start_month_selected,
             'end_month_selected': end_month_selected
         })
