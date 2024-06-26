@@ -98,6 +98,7 @@
 }
 .search_list > div:nth-child(2) {
   width: 40%;
+  justify-content: start;
 }
 .search_list > div:nth-child(3) {
   width: 30%;
