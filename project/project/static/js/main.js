@@ -81,11 +81,13 @@ const imageChange = document.getElementById("user_image");
 let imageUrl;
 
 if (postCount === 0) {
+  imageUrl = step0Url;
+} else if (postCount < 3) {
   imageUrl = step1Url;
-} else if (postCount < 2) {
-  console.log(postCount);
+} else if (postCount >= 3 && postCount < 5) {
   imageUrl = step2Url;
-} else {
+} else if (postCount >= 5) {
+  console.log(postCount);
   imageUrl = step3Url;
 }
 
