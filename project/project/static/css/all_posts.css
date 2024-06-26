@@ -58,7 +58,8 @@
 }
 .search-button {
   border: 1px solid black;
-  border-radius: 0.3rem;
+  border-radius: 0.6rem;
+  width: 2.8rem;
 }
 #reset-button {
   border: 1px solid black;
