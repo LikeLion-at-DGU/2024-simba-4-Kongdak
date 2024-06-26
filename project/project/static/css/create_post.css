@@ -64,14 +64,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 80%;
+  width: 100%;
   gap: 1.3rem;
 }
 .diary_title {
   display: flex;
   align-items: center;
   flex-direction: row;
-  width: 100%;
+  width: 80%;
   height: 3rem;
   background: #fff;
   border: 1px solid #000;
@@ -84,11 +84,12 @@
   font-size: 1.2rem;
 }
 #text {
-  width: 100%;
+  width: 72%;
   height: 240px;
   border: solid 1px #000 !important;
   background: #fff;
 }
+
 input {
   width: 90%;
   height: 100%;
@@ -98,7 +99,7 @@ input {
   display: flex;
   align-items: center;
   flex-direction: row;
-  width: 100%;
+  width: 80%;
   height: 3rem;
   background: #fff;
   border: 1px solid #000;
@@ -122,13 +123,12 @@ textarea {
 }
 
 #diary_save {
-  width: 100%;
-  flex-direction: column;
-  height: 40px;
-  border-radius: 10px;
-  border: none;
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 2.7rem;
+  border-radius: 0.9rem;
 }
 
 .disabled-btn {
@@ -138,4 +138,16 @@ textarea {
 .abled-btn {
   background-color: #fe8535;
   color: white;
+}
+.submit-frame {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 4rem;
+  border: 1px solid black;
+  background: #fff;
+  padding-top: 1rem;
+
+  border-bottom: none;
 }
