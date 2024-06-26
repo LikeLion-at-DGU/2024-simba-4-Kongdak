@@ -82,12 +82,10 @@ let imageUrl;
 
 if (postCount === 0) {
   imageUrl = step1Url;
-} else if (postCount < 2) {
+} else if (postCount < 4) {
   console.log(postCount);
-  console.log("1개");
   imageUrl = step2Url;
 } else {
-  console.log("3개");
   imageUrl = step3Url;
 }
 
