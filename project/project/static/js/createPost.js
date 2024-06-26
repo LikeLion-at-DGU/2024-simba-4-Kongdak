@@ -9,11 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
   todayZone.textContent = getCurrentDate();
 
   // 제목과 내용 검증 정규 표현식
-  const titleRegex =
-    /^[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ0-9!@#$%^&*()_+|~=`{}\[\]:";'<>?,.\/\s]{1,8}$/;
+  const titleRegex = /^(?!\s*$).{1,8}$/;
+  const contentRegex = /^(?!\s*$).+$/;
 
-  const contentRegex =
-    /^[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ0-9!@#$%^&*()_+|~=`{}\[\]:";'<>?,.\/\s]{1,}$/;
 
   const tagRegex = /^#.+/;
 
@@ -81,9 +79,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function validateInputs() {
     const isTitleValid = titleRegex.test(titleInput.value);
     const isContentValid = contentRegex.test(contentInput.value);
-    const isTagValid = tagRegex.test(tagInput.value.trim());
+    // const isTagValid = tagRegex.test(tagInput.value.trim());
 
-    if (isTitleValid && isContentValid && isTagValid) {
+    if (isTitleValid && isContentValid) {
       saveButton.disabled = false;
       saveButton.classList.remove("disabled-btn");
       saveButton.classList.add("abled-btn");
